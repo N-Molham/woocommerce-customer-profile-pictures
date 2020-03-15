@@ -40,21 +40,23 @@ if ( ! is_woocommerce_active() ) {
 class WC_Customer_Profile_Pictures_Loader {
 
 	/** minimum PHP version required by this plugin */
-	const MINIMUM_PHP_VERSION = '7.2.0';
+	public const MINIMUM_PHP_VERSION = '7.2.0';
 
 	/** minimum WordPress version required by this plugin */
-	const MINIMUM_WP_VERSION = '5.3';
+	public const MINIMUM_WP_VERSION = '5.3';
 
 	/** minimum WooCommerce version required by this plugin */
-	const MINIMUM_WC_VERSION = '4.0.0';
+	public const MINIMUM_WC_VERSION = '4.0.0';
 
 	/** SkyVerge plugin framework version used by this plugin */
-	const FRAMEWORK_VERSION = '5.5.1';
+	public const FRAMEWORK_VERSION = '5.5.1';
 
 	/** the plugin name, for displaying notices */
-	const PLUGIN_NAME = 'WooCommerce Customer Profile Pictures';
+	public const PLUGIN_NAME = 'WooCommerce Customer Profile Pictures';
 
-	/** @var SV_WC_Framework_Plugin_Loader single instance of this class // TODO: replace with loader class name */
+	/**
+	 * @var WC_Customer_Profile_Pictures_Loader single instance of this class
+	 */
 	private static $instance;
 
 	/** @var array the admin notices to add */
@@ -108,7 +110,7 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	public function init_plugin() {
+	public function init_plugin(): void {
 
 		if ( ! $this->plugins_compatible() ) {
 			return;
@@ -130,7 +132,7 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	private function load_framework() {
+	private function load_framework(): void {
 
 		if ( ! class_exists( '\\SkyVerge\\WooCommerce\\PluginFramework\\' . $this->get_framework_version_namespace() . '\\SV_WC_Plugin' ) ) {
 			require_once( plugin_dir_path( __FILE__ ) . 'vendor/skyverge/wc-plugin-framework/woocommerce/class-sv-wc-plugin.php' );
@@ -150,9 +152,10 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return string
 	 */
-	public function get_framework_version_namespace() {
+	public function get_framework_version_namespace(): string {
 
 		return 'v' . str_replace( '.', '_', $this->get_framework_version() );
+
 	}
 
 
@@ -163,9 +166,10 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return string
 	 */
-	public function get_framework_version() {
+	public function get_framework_version(): string {
 
 		return self::FRAMEWORK_VERSION;
+
 	}
 
 
@@ -178,14 +182,16 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	public function activation_check() {
+	public function activation_check(): void {
 
 		if ( ! $this->is_environment_compatible() ) {
 
 			$this->deactivate_plugin();
 
 			wp_die( self::PLUGIN_NAME . ' could not be activated. ' . $this->get_environment_message() );
+
 		}
+
 	}
 
 
@@ -196,14 +202,16 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	public function check_environment() {
+	public function check_environment(): void {
 
 		if ( ! $this->is_environment_compatible() && is_plugin_active( plugin_basename( __FILE__ ) ) ) {
 
 			$this->deactivate_plugin();
 
 			$this->add_admin_notice( 'bad_environment', 'error', self::PLUGIN_NAME . ' has been deactivated. ' . $this->get_environment_message() );
+
 		}
+
 	}
 
 
@@ -213,8 +221,9 @@ class WC_Customer_Profile_Pictures_Loader {
 	 * @internal
 	 *
 	 * @since 1.0.0
+	 * @noinspection DuplicatedCode
 	 */
-	public function add_plugin_notices() {
+	public function add_plugin_notices(): void {
 
 		if ( ! $this->is_wp_compatible() ) {
 
@@ -224,6 +233,7 @@ class WC_Customer_Profile_Pictures_Loader {
 				self::MINIMUM_WP_VERSION,
 				'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">', '</a>'
 			) );
+
 		}
 
 		if ( ! $this->is_wc_compatible() ) {
@@ -234,7 +244,9 @@ class WC_Customer_Profile_Pictures_Loader {
 				self::MINIMUM_WC_VERSION,
 				'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">', '</a>',
 				'<a href="' . esc_url( 'https://downloads.wordpress.org/plugin/woocommerce.' . self::MINIMUM_WC_VERSION . '.zip' ) . '">', '</a>'
+
 			) );
+
 		}
 	}
 
@@ -246,9 +258,10 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return bool
 	 */
-	private function plugins_compatible() {
+	private function plugins_compatible(): bool {
 
 		return $this->is_wp_compatible() && $this->is_wc_compatible();
+
 	}
 
 
@@ -259,13 +272,16 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return bool
 	 */
-	private function is_wp_compatible() {
+	private function is_wp_compatible(): bool {
 
 		if ( ! self::MINIMUM_WP_VERSION ) {
+
 			return true;
+
 		}
 
 		return version_compare( get_bloginfo( 'version' ), self::MINIMUM_WP_VERSION, '>=' );
+
 	}
 
 
@@ -276,13 +292,16 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return bool
 	 */
-	private function is_wc_compatible() {
+	private function is_wc_compatible(): bool {
 
 		if ( ! self::MINIMUM_WC_VERSION ) {
+
 			return true;
+
 		}
 
 		return defined( 'WC_VERSION' ) && version_compare( WC_VERSION, self::MINIMUM_WC_VERSION, '>=' );
+
 	}
 
 
@@ -293,13 +312,16 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function deactivate_plugin() {
+	protected function deactivate_plugin(): void {
 
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 
 		if ( isset( $_GET['activate'] ) ) {
+
 			unset( $_GET['activate'] );
+
 		}
+
 	}
 
 
@@ -312,12 +334,13 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	private function add_admin_notice( $slug, $class, $message ) {
+	private function add_admin_notice( $slug, $class, $message ): void {
 
 		$this->notices[ $slug ] = [
 			'class'   => $class,
 			'message' => $message,
 		];
+
 	}
 
 
@@ -328,16 +351,18 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	public function admin_notices() {
+	public function admin_notices(): void {
 
-		foreach ( (array) $this->notices as $notice_key => $notice ) {
+		foreach ( $this->notices as $notice_key => $notice ) {
 
 			?>
 			<div class="<?php echo esc_attr( $notice['class'] ); ?>">
 				<p><?php echo wp_kses( $notice['message'], [ 'a' => [ 'href' => [] ] ] ); ?></p>
 			</div>
 			<?php
+
 		}
+
 	}
 
 
@@ -350,9 +375,10 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return bool
 	 */
-	private function is_environment_compatible() {
+	private function is_environment_compatible(): bool {
 
 		return version_compare( PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=' );
+
 	}
 
 
@@ -363,9 +389,10 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return string
 	 */
-	private function get_environment_message() {
+	private function get_environment_message(): string {
 
 		return sprintf( 'The minimum PHP version required for this plugin is %1$s. You are running %2$s.', self::MINIMUM_PHP_VERSION, PHP_VERSION );
+
 	}
 
 
@@ -378,15 +405,17 @@ class WC_Customer_Profile_Pictures_Loader {
 	 *
 	 * @return \WC_Customer_Profile_Pictures_Loader
 	 */
-	public static function instance() {
+	public static function instance(): WC_Customer_Profile_Pictures_Loader {
 
 		if ( null === self::$instance ) {
+
 			self::$instance = new self();
+
 		}
 
 		return self::$instance;
-	}
 
+	}
 
 }
 

@@ -47,13 +47,16 @@ class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
 	 *
 	 * @return WC_Customer_Profile_Pictures
 	 */
-	public static function instance() {
+	public static function instance(): WC_Customer_Profile_Pictures {
 
 		if ( null === self::$instance ) {
+
 			self::$instance = new self();
+
 		}
 
 		return self::$instance;
+
 	}
 
 	/**
@@ -76,7 +79,7 @@ class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
 	 *
 	 * @return string the full path and filename of the plugin file
 	 */
-	protected function get_file() {
+	protected function get_file(): string {
 
 		return __FILE__;
 
@@ -89,7 +92,7 @@ class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
 	 *
 	 * @return string plugin name
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name(): string {
 
 		return __( 'WooCommerce Customer Profile Pictures', 'woocommerce-customer-profile-pictures' );
 
