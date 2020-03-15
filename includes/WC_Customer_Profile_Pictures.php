@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Framework Plugin
+ * WooCommerce Customer Profile Picture Plugin
  *
  * This source file is subject to the GNU General Public License v3.0
  * that is bundled with this package in the file license.txt.
@@ -10,19 +10,21 @@
  * obtain it through the world-wide-web, please send an email
  * to license@skyverge.com so we can send you a copy immediately.
  *
- * @author    SkyVerge
+ * @author    Nabeel Molham
  * @copyright Copyright (c) 2014-2019, SkyVerge, Inc.
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
+namespace Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures;
+
 defined( 'ABSPATH' ) or exit;
 
-use SkyVerge\WooCommerce\PluginFramework\v5_5_1 as Framework;
+use SkyVerge\WooCommerce\PluginFramework\v5_5_1\SV_WC_Plugin;
 
 /**
  * @since 1.0.0
  */
-class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
+class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 
 	/**
 	 * @var string
@@ -34,7 +36,7 @@ class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
 	 */
 	public const PLUGIN_ID = 'framework-plugin';
 
-	/** @var \WC_Customer_Profile_Pictures */
+	/** @var static */
 	protected static $instance;
 
 
@@ -45,7 +47,7 @@ class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WC_Customer_Profile_Pictures
+	 * @return static
 	 */
 	public static function instance(): WC_Customer_Profile_Pictures {
 
@@ -97,15 +99,5 @@ class WC_Customer_Profile_Pictures extends Framework\SV_WC_Plugin {
 		return __( 'WooCommerce Customer Profile Pictures', 'woocommerce-customer-profile-pictures' );
 
 	}
-
-}
-
-
-/**
- * @since 1.0.0
- */
-function wc_customer_profile_pictures() {
-
-	return WC_Customer_Profile_Pictures::instance();
 
 }

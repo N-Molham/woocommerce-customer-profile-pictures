@@ -118,8 +118,14 @@ class WC_Customer_Profile_Pictures_Loader {
 
 		$this->load_framework();
 
-		// load the main plugin class
-		require_once( plugin_dir_path( __FILE__ ) . 'class-wc-customer-profile-pictures.php' );
+		// autoload plugin and vendor files
+		$loader = require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+
+		// register plugin namespace with autoloader
+		$loader->addPsr4( 'Nabeel_Molham\\WooCommerce\\WC_Customer_Profile_Pictures\\', __DIR__ . '/includes' );
+
+		// load the file that contains the initial plugin function
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/Functions.php' );
 
 		// fire it up!
 		wc_customer_profile_pictures();
