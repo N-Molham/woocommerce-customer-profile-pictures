@@ -1,0 +1,43 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "55c09711715f6920cb098573be0b7cdd",
+    "packages": [
+        {
+            "name": "skyverge/wc-plugin-framework",
+            "version": "5.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/skyverge/wc-plugin-framework.git",
+                "reference": "55d543581dd1bdbad51e1d84d0a6d8490f51ff1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/skyverge/wc-plugin-framework/zipball/55d543581dd1bdbad51e1d84d0a6d8490f51ff1a",
+                "reference": "55d543581dd1bdbad51e1d84d0a6d8490f51ff1a",
+                "shasum": ""
+            },
+            "require-dev": {
+                "lucatume/wp-browser": "^2.1"
+            },
+            "type": "library",
+            "description": "The official SkyVerge WooCommerce plugin framework",
+            "support": {
+                "source": "https://github.com/skyverge/wc-plugin-framework/tree/5.5.1",
+                "issues": "https://github.com/skyverge/wc-plugin-framework/issues"
+            },
+            "time": "2019-11-15T03:14:58+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
