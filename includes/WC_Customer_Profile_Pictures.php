@@ -39,7 +39,11 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	/** @var static */
 	protected static $instance;
 
-
+	/**
+	 * @var WC_Customer_Profile_Pictures_Settings
+	 */
+	private $settings;
+	
 	/**
 	 * Gets the main instance of Framework Plugin instance.
 	 *
@@ -72,6 +76,21 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 			'text_domain' => 'woocommerce-customer-profile-pictures',
 		] );
 
+		add_action( 'woocommerce_init', [ $this, 'woocommerce_init' ] );
+
+	}
+
+	/**
+	 * Initialize plugin components when WooCommerce is ready
+	 *
+	 * @internal
+	 *
+	 * @since 1.0.0
+	 */
+	public function woocommerce_init(): void {
+
+		$this->settings = new WC_Customer_Profile_Pictures_Settings();
+		
 	}
 
 	/**
