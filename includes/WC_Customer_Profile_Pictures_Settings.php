@@ -35,7 +35,7 @@ class WC_Customer_Profile_Pictures_Settings {
 	 * @return array
 	 */
 	public function add_settings( $account_settings ): array {
-
+		
 		$account_settings[] = [
 			'title' => __( 'Customer Profile Pictures', 'woocommerce-customer-profile-pictures' ),
 			'type'  => 'title',
@@ -66,13 +66,24 @@ class WC_Customer_Profile_Pictures_Settings {
 	}
 
 	/**
+	 * Get maximum number of profile pictures allowed
+	 *
 	 * @since 1.0.0
 	 *
 	 * @return int
 	 */
 	public function get_profile_pictures_maximum(): int {
 
-		return (int) get_option( 'wc_customer_profile_pictures_max', $this->_default_maximum_value );
+		$maximum_allowed = get_option( 'wc_customer_profile_pictures_max', $this->_default_maximum_value );
+
+		/**
+		 * Allow 3rd party plugins/theme to modify the value
+		 *
+		 * @param int $maximum_allowed
+		 *
+		 * @return int
+		 */
+		return (int) apply_filters( 'wc_customer_profile_pictures_maximum_allowed', $maximum_allowed );
 
 	}
 
