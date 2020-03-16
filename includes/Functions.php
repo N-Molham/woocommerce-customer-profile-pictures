@@ -20,6 +20,6 @@ function wc_customer_profile_pictures() {
  */
 function wc_customer_profile_pictures_maximum_allowed() {
 
-	return wc_customer_profile_pictures()->get_settings_instance()->get_profile_pictures_maximum();
+	return wc_customer_profile_pictures()->get_plugin_settings_instance()->get_profile_pictures_maximum();
 
 }

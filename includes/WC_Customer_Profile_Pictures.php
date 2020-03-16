@@ -40,9 +40,14 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	protected static $instance;
 
 	/**
+	 * @var WC_Customer_Profile_Pictures_Account_Settings
+	 */
+	protected $_account_settings;
+
+	/**
 	 * @var WC_Customer_Profile_Pictures_Settings
 	 */
-	private $_settings;
+	protected $_plugin_settings;
 
 	/**
 	 * Gets the main instance of Framework Plugin instance.
@@ -89,7 +94,8 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	 */
 	public function woocommerce_init(): void {
 
-		$this->_settings = new WC_Customer_Profile_Pictures_Settings();
+		$this->_plugin_settings  = new WC_Customer_Profile_Pictures_Settings();
+		$this->_account_settings = new WC_Customer_Profile_Pictures_Account_Settings();
 
 	}
 
@@ -102,7 +108,7 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	 */
 	protected function get_file(): string {
 
-		return __FILE__;
+		return str_replace( '/includes', '/woocommerce-customer-profile-pictures.php', __DIR__ );
 
 	}
 
@@ -122,9 +128,18 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	/**
 	 * @return WC_Customer_Profile_Pictures_Settings
 	 */
-	public function get_settings_instance(): WC_Customer_Profile_Pictures_Settings {
+	public function get_plugin_settings_instance(): WC_Customer_Profile_Pictures_Settings {
 
-		return $this->_settings;
+		return $this->_plugin_settings;
+
+	}
+
+	/**
+	 * @return WC_Customer_Profile_Pictures_Account_Settings
+	 */
+	public function get_account_settings_instance(): WC_Customer_Profile_Pictures_Account_Settings {
+
+		return $this->_account_settings;
 
 	}
 
