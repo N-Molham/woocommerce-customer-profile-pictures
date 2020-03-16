@@ -10,6 +10,13 @@ namespace Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures;
 class WC_Customer_Profile_Pictures_Settings {
 
 	/**
+	 * Default maximum pictures value
+	 *
+	 * @var int
+	 */
+	protected $_default_maximum_value = 2;
+
+	/**
 	 * WC_Customer_Profile_Pictures_Settings constructor
 	 *
 	 * @since 1.0.0
@@ -40,7 +47,7 @@ class WC_Customer_Profile_Pictures_Settings {
 			'desc'              => __( 'The maximum number of profile pictures the customer can have.', 'woocommerce-customer-profile-pictures' ),
 			'id'                => 'wc_customer_profile_pictures_max',
 			'css'               => 'width:80px;',
-			'default'           => '2',
+			'default'           => $this->_default_maximum_value,
 			'desc_tip'          => true,
 			'type'              => 'number',
 			'custom_attributes' => [
@@ -55,6 +62,17 @@ class WC_Customer_Profile_Pictures_Settings {
 		];
 
 		return $account_settings;
+
+	}
+
+	/**
+	 * @since 1.0.0
+	 *
+	 * @return int
+	 */
+	public function get_profile_pictures_maximum(): int {
+
+		return (int) get_option( 'wc_customer_profile_pictures_max', $this->_default_maximum_value );
 
 	}
 
