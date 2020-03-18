@@ -11,3 +11,7 @@
 	display: none;
 	pointer-events: none;
 }
+
+img.wc-customer-profile-picture-field-image {
+	width: 200px;
+}

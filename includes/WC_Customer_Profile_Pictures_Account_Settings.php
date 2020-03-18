@@ -51,6 +51,10 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 	 */
 	public function save_uploaded_profile_pictures( $user_id ): void {
 
+		$active_profile_picture_index = filter_input( INPUT_POST, 'account_profile_picture_active', FILTER_SANITIZE_NUMBER_INT );
+
+		update_user_meta( $user_id, 'wc_active_profile_picture', $active_profile_picture_index );
+
 		if ( count( $this->_saved_files ) ) {
 
 			update_user_meta( $user_id, 'wc_profile_pictures', $this->_saved_files );
@@ -71,7 +75,7 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 	 */
 	public function validate_submitted_profile_pictures( $errors ): void {
 
-		$uploaded_files = $_FILES['account_profile_picture'] ? : null;
+		$uploaded_files = $_FILES['account_profile_picture'] ?? null;
 
 		if ( empty( $uploaded_files ) ) {
 
@@ -174,9 +178,11 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 
 		wc_get_template( 'account-settings/profile-pictures-field.php',
 			[
-				'customer_id'      => $customer_id,
-				'maximum_allowed'  => wc_customer_profile_pictures_maximum_allowed(),
-				'profile_pictures' => $this->get_customer_profile_pictures( $customer_id ),
+				'customer_id'                  => $customer_id,
+				'maximum_allowed'              => wc_customer_profile_pictures_maximum_allowed(),
+				'profile_pictures'             => $this->get_customer_profile_pictures( $customer_id ),
+				'active_profile_picture'       => $this->get_customer_active_profile_picture( 'all', $customer_id ),
+				'active_profile_picture_index' => $this->get_customer_active_profile_picture_index( $customer_id ),
 			],
 			'',
 			wc_customer_profile_pictures()->get_plugin_path() . '/templates/' );
@@ -209,7 +215,7 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 	 */
 	public function get_customer_profile_pictures( $customer_id = null ): array {
 
-		$customer_id = $customer_id ? : get_current_user_id();
+		$customer_id = $customer_id ?? get_current_user_id();
 
 		$profile_pictures = array_filter( (array) get_user_meta( $customer_id, 'wc_profile_pictures', true ) );
 
@@ -222,6 +228,75 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 		 * @return array
 		 */
 		return (array) apply_filters( 'wc_customer_profile_pictures_of_a_customer', $profile_pictures, $customer_id );
+
+	}
+
+	/**
+	 * Get customer's active profile picture
+	 *
+	 * @param string $return
+	 * @param int    $customer_id
+	 *
+	 * @return string|array|bool
+	 */
+	public function get_customer_active_profile_picture( $return = 'url', $customer_id = null ) {
+
+		$active_profile_picture_index = $this->get_customer_active_profile_picture_index( $customer_id );
+
+		$profile_pictures = $this->get_customer_profile_pictures( $customer_id );
+
+		if ( empty( $profile_pictures ) ) {
+
+			/**
+			 * Allow 3rd party plugins/theme to modify customer's active profile picture
+			 *
+			 * @param mixed  $not_found
+			 * @param int    $customer_id
+			 * @param string $return
+			 *
+			 * @return mixed
+			 */
+			return apply_filters( 'wc_customer_profile_pictures_active', false, $customer_id, $return );
+
+		}
+
+		$active_profile_picture = $profile_pictures[ $active_profile_picture_index ] ?? array_shift( $profile_pictures );
+
+		/**
+		 * Allow 3rd party plugins/theme to modify customer's active profile picture
+		 *
+		 * @param mixed  $active_profile_picture
+		 * @param int    $customer_id
+		 * @param string $return
+		 *
+		 * @return string|array
+		 */
+		return apply_filters( 'wc_customer_profile_pictures_active', $active_profile_picture[ $return ] ?? $active_profile_picture, $customer_id, $return );
+
+	}
+
+	/**
+	 * Get customer's active profile picture index
+	 *
+	 * @param int $customer_id
+	 *
+	 * @return int
+	 */
+	public function get_customer_active_profile_picture_index( $customer_id = null ): int {
+
+		$customer_id = $customer_id ?? get_current_user_id();
+
+		$active_profile_picture_index = (int) get_user_meta( $customer_id, 'wc_active_profile_picture', true );
+
+		/**
+		 * Allow 3rd party plugins/theme to modify customer's active profile picture index
+		 *
+		 * @param int $active_profile_picture_index
+		 * @param int $customer_id
+		 *
+		 * @return int
+		 */
+		return (int) apply_filters( 'wc_customer_profile_picture_active_index', $active_profile_picture_index, $customer_id );
 
 	}
 

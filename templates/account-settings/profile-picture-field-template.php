@@ -3,8 +3,8 @@
  * Profile picture field template
  *
  * @since 1.0.0
+ * 
  * @package Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures
- *
  */
 
 ?>

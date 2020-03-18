@@ -9,8 +9,9 @@
  * @var $customer_id int
  * @var $maximum_allowed int
  * @var $profile_pictures array
+ * @var $active_profile_picture array
+ * @var $active_profile_picture_index int
  */
-
 ?>
 
 <fieldset id="wc-customer-profile-pictures-fieldset" data-maximum="<?php echo esc_attr( $maximum_allowed ); ?>">
@@ -20,6 +21,17 @@
 		<div class="woocommerce-notices-wrapper">
 			<p class="woocommerce-info" role="alert"><?php esc_attr_e( 'You do not have any profile pictures uploaded yet.', 'woocommerce-customer-profile-pictures' ); ?></p>
 		</div>
+	<?php else: ?>
+
+		<?php foreach ( $profile_pictures as $picture_index => $profile_picture ) : $is_active = $active_profile_picture_index === $picture_index; ?>
+
+			<?php wc_get_template( 'account-settings/profile-picture-display.php',
+				compact( 'customer_id', 'picture_index', 'profile_picture', 'is_active' ),
+				'',
+				wc_customer_profile_pictures()->get_plugin_path() . '/templates/' ); ?>
+
+		<?php endforeach; ?>
+
 	<?php endif; ?>
 
 	<div class="wc-customer-profile-pictures-list"></div>
