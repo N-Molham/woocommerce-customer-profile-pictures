@@ -20,6 +20,31 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 
 		add_action( 'woocommerce_edit_account_form_start', [ $this, 'render_profile_pictures_field' ] );
 
+		add_action( 'template_redirect', [ $this, 'load_assets' ] );
+
+	}
+
+	/**
+	 * Load JS & CSS assets
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function load_assets(): void {
+
+		if ( is_account_page() && is_wc_endpoint_url( 'edit-account' ) ) {
+
+			wp_enqueue_style( 'woocommerce-customer-profile-pictures-account-page',
+				wc_customer_profile_pictures()->get_plugin_url() . '/assets/css/woocommerce-customer-profile-pictures-account-page.css',
+				null, wc_customer_profile_pictures()->get_version() );
+
+			wp_enqueue_script( 'woocommerce-customer-profile-pictures-account-page',
+				wc_customer_profile_pictures()->get_plugin_url() . '/assets/js/woocommerce-customer-profile-pictures-account-page.js',
+				[ 'jquery' ], wc_customer_profile_pictures()->get_version(), true );
+
+		}
+
 	}
 
 	/**
@@ -42,6 +67,10 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 			'',
 			wc_customer_profile_pictures()->get_plugin_path() . '/templates/' );
 
+		wc_get_template( 'account-settings/profile-picture-field-template.php',
+			[], '',
+			wc_customer_profile_pictures()->get_plugin_path() . '/templates/' );
+
 	}
 
 	/**
@@ -56,7 +85,7 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 		$customer_id = $customer_id ? : get_current_user_id();
 
 		$profile_pictures_ids = array_filter( get_user_meta( $customer_id, '_profile_pictures' ) );
-		
+
 		$profile_pictures = [];
 
 		if ( count( $profile_pictures_ids ) ) {
