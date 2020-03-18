@@ -2,3 +2,12 @@
 #wc-customer-profile-pictures-fieldset {
 	margin-bottom: 3rem;
 }
+
+#wc-customer-profile-pictures-fieldset .clear {
+	clear: both;
+}
+
+#wc-customer-profile-pictures-fieldset .hidden {
+	display: none;
+	pointer-events: none;
+}

@@ -43,6 +43,12 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 				wc_customer_profile_pictures()->get_plugin_url() . '/assets/js/woocommerce-customer-profile-pictures-account-page.js',
 				[ 'jquery' ], wc_customer_profile_pictures()->get_version(), true );
 
+			wp_localize_script( 'woocommerce-customer-profile-pictures-account-page', 'wc_customer_profile_pictures', [
+				'i18n' => [
+					'confirm_remove' => esc_html__( 'Are you sure you want to remove this picture?', 'woocommerce-customer-profile-pictures' ),
+				],
+			] );
+
 		}
 
 	}

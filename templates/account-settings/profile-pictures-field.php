@@ -2,10 +2,10 @@
 /**
  * Profile pictures field UI
  *
- * @package Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures
- * 
  * @since 1.0.0
- * 
+ *
+ * @package Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures
+ *
  * @var $customer_id int
  * @var $maximum_allowed int
  * @var $profile_pictures array
@@ -28,4 +28,3 @@
 
 </fieldset>
 
-<div class="clear"></div>
