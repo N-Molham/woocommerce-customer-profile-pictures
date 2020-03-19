@@ -79,14 +79,14 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 			}
 
 		}
-		
+
 		if ( count( $this->_saved_files ) ) {
 
 			$existing_profile_pictures = array_merge( $existing_profile_pictures, $this->_saved_files );
 
 		}
-		
-		update_user_meta( $user_id, 'wc_profile_pictures', $existing_profile_pictures );
+
+		update_user_meta( $user_id, $this->get_profile_pictures_meta_key(), $existing_profile_pictures );
 
 	}
 
@@ -250,7 +250,7 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 
 		$customer_id = $customer_id ?? get_current_user_id();
 
-		$profile_pictures = array_filter( (array) get_user_meta( $customer_id, 'wc_profile_pictures', true ) );
+		$profile_pictures = array_filter( (array) get_user_meta( $customer_id, $this->get_profile_pictures_meta_key(), true ) );
 
 		/**
 		 * Allow 3rd party plugins/theme to modify customer's profile pictures
@@ -331,6 +331,19 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 		 * @return int
 		 */
 		return (int) apply_filters( 'wc_customer_profile_picture_active_index', $active_profile_picture_index, $customer_id );
+
+	}
+
+	/**
+	 * Meta key holding customer's profile pictures
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
+	public function get_profile_pictures_meta_key(): string {
+
+		return 'wc_profile_pictures';
 
 	}
 

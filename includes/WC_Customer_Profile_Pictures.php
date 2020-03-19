@@ -19,6 +19,7 @@ namespace Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures;
 
 defined( 'ABSPATH' ) or exit;
 
+use Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures\REST_API\WC_Customer_Profile_Pictures_REST_Controller;
 use SkyVerge\WooCommerce\PluginFramework\v5_5_1\SV_WC_Plugin;
 use WP_Comment;
 use WP_User;
@@ -60,6 +61,11 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	 * @var WC_Customer_Profile_Pictures_Orders
 	 */
 	protected $_orders;
+
+	/**
+	 * @var WC_Customer_Profile_Pictures_REST_Controller
+	 */
+	protected $_rest_controller;
 
 	/**
 	 * Gets the main instance of Framework Plugin instance.
@@ -112,6 +118,22 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		$this->_orders           = new WC_Customer_Profile_Pictures_Orders();
 
 		add_filter( 'pre_get_avatar_data', [ $this, 'override_avatar_with_active_profile_picture' ], 10, 2 );
+
+		add_action( 'rest_api_init', [ $this, 'register_rest_api_endpoint' ], 20 );
+
+	}
+
+	/**
+	 * Register custom REST API endpoint
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_rest_api_endpoint(): void {
+
+		$this->_rest_controller = new WC_Customer_Profile_Pictures_REST_Controller();
+		$this->_rest_controller->register_routes();
 
 	}
 
@@ -322,6 +344,15 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	public function get_user_edit_instance(): WC_Customer_Profile_Pictures_User_Edit {
 
 		return $this->_edit_user;
+
+	}
+
+	/**
+	 * @return WC_Customer_Profile_Pictures_REST_Controller
+	 */
+	public function get_rest_controller_instance(): WC_Customer_Profile_Pictures_REST_Controller {
+
+		return $this->_rest_controller;
 
 	}
 
