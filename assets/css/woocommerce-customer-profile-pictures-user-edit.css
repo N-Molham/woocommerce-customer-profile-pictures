@@ -10,10 +10,16 @@
 }
 
 .wc-customer-profile-picture-image {
-	display: block;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.post-type-shop_order .wp-list-table .wc-customer-profile-picture-image {
+	margin-right: 0.5rem;
 }
 
 .wc-customer-profile-pictures-image-model {
+	display: block;
 	text-align: center;
 }
 

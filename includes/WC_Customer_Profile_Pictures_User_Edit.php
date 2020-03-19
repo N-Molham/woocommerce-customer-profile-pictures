@@ -32,8 +32,8 @@ class WC_Customer_Profile_Pictures_User_Edit {
 	 * @return void
 	 */
 	public function load_assets(): void {
-
-		if ( in_array( get_current_screen()->id, [ 'profile', 'user-edit', 'shop_order' ], true ) ) {
+		
+		if ( in_array( get_current_screen()->id, [ 'profile', 'user-edit', 'shop_order', 'edit-shop_order' ], true ) ) {
 
 			add_thickbox();
 
@@ -74,24 +74,15 @@ class WC_Customer_Profile_Pictures_User_Edit {
 
 		}
 
-		$description .= '</p><p><strong>' . esc_html__( 'Other profile pictures:', 'woocommerce-customer-profile-pictures' ) . '</strong><span class="wc-customer-profile-picture-list">';
+		$description .= '</p><p>';
 
-		foreach ( $user_profile_pictures as $index => $picture ) {
+		ob_start();
 
-			$picture_full_size_model_id = 'wc-customer-profile-pictures-image-model-' . $index;
-			$picture_small_size_url     = wc_customer_profile_pictures()->get_profile_picture_size_url( $picture, '96' );
+		wc_get_template( 'user-edit/profile-pictures.php',
+			compact( 'user_profile_pictures' ), '',
+			wc_customer_profile_pictures()->get_plugin_path() . '/templates/' );
 
-			$description .= '<span class="wc-customer-profile-picture-item">' .
-			                '<a href="#TB_inline?height=600&width=600&inlineId=' . esc_attr( $picture_full_size_model_id ) . '" class="thickbox"' .
-			                ' title="' . esc_attr__( 'Profile #', 'woocommerce-customer-profile-pictures' ) . ( $index + 1 ) . '">' .
-			                '<img alt="" src="' . esc_url( $picture_small_size_url ) . '" class="wc-customer-profile-picture-image" width="96"></a></span>';
-
-			$description .= '<div id="' . esc_attr( $picture_full_size_model_id ) . '" class="hidden">' .
-			                '<div class="wc-customer-profile-pictures-image-model"><img src="' . esc_url( $picture['url'] ) . '" alt=""/></div></div>';
-
-		}
-
-		$description .= '</span>';
+		$description .= ob_get_clean();
 
 		return $description;
 

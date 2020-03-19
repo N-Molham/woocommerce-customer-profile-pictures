@@ -49,14 +49,9 @@ class WC_Customer_Profile_Pictures_Orders {
 
 		$thumb_picture_url = wc_customer_profile_pictures()->get_profile_picture_size_url( $profile_picture, '192' );
 
-		echo '<p class="form-field form-field-wide wc-customer-profile-picture">',
-		'<a href="#TB_inline?height=600&width=600&inlineId=wc-customer-profile-pictures-image-model" class="thickbox" title="',
-		esc_html__( 'Customer Profile Picture at time of purchase', 'woocommerce-customer-profile-pictures' ), '">',
-			'<img alt="" src="' . esc_url( $thumb_picture_url ) . '" class="wc-customer-profile-picture-image" width="96"></a>',
-		'</p>';
-
-		echo '<div id="wc-customer-profile-pictures-image-model" class="hidden">',
-			'<div class="wc-customer-profile-pictures-image-model"><img src="' . esc_url( $profile_picture['url'] ) . '" alt=""/></div></div>';
+		wc_get_template( 'order-details/customer-profile-picture.php',
+			compact( 'profile_picture', 'thumb_picture_url' ), '',
+			wc_customer_profile_pictures()->get_plugin_path() . '/templates/' );
 
 	}
 
@@ -88,7 +83,9 @@ class WC_Customer_Profile_Pictures_Orders {
 
 		}
 
-		echo '<img src="', esc_url( wc_customer_profile_pictures()->get_profile_picture_size_url( $profile_picture, '52' ) ), '" alt="" /> ';
+		wc_get_template( 'orders-table/customer-profile-picture.php', [
+			'profile_picture_url' => wc_customer_profile_pictures()->get_profile_picture_size_url( $profile_picture, '52' ),
+		], '', wc_customer_profile_pictures()->get_plugin_path() . '/templates/' );
 
 	}
 
