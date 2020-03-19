@@ -54,11 +54,39 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 
 		update_user_meta( $user_id, 'wc_active_profile_picture', $active_profile_picture_index );
 
-		if ( count( $this->_saved_files ) ) {
+		$existing_profile_pictures = $this->get_customer_profile_pictures( $user_id );
 
-			update_user_meta( $user_id, 'wc_profile_pictures', $this->_saved_files );
+		if ( $existing_profile_pictures ) {
+
+			$marked_to_keep_pictures = filter_input( INPUT_POST, 'account_keep_profile_pictures', FILTER_SANITIZE_NUMBER_INT, FILTER_REQUIRE_ARRAY );
+
+			if ( $marked_to_keep_pictures ) {
+
+				$marked_to_keep_pictures = array_map( 'absint', $marked_to_keep_pictures );
+
+				foreach ( array_keys( $existing_profile_pictures ) as $picture_index ) {
+
+					if ( in_array( $picture_index, $marked_to_keep_pictures, true ) ) {
+
+						continue;
+
+					}
+
+					unset( $existing_profile_pictures[ $picture_index ] );
+
+				}
+
+			}
 
 		}
+		
+		if ( count( $this->_saved_files ) ) {
+
+			$existing_profile_pictures = array_merge( $existing_profile_pictures, $this->_saved_files );
+
+		}
+		
+		update_user_meta( $user_id, 'wc_profile_pictures', $existing_profile_pictures );
 
 	}
 
@@ -100,6 +128,12 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 		}
 
 		foreach ( $uploaded_files['tmp_name'] as $index => $temp_file_path ) {
+
+			if ( empty( $temp_file_path ) ) {
+
+				continue;
+
+			}
 
 			if ( false === wp_get_image_mime( $temp_file_path ) ) {
 

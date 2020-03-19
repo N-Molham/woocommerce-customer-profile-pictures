@@ -16,11 +16,6 @@
 		</p>
 
 		<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last wc-customer-profile-picture-field-active">
-			<label class="wc-customer-profile-pictures-set-active">
-				<input type="radio" name="account_profile_picture_active" value="{index}" class="woocommerce-Input woocommerce-Input--radio input-radio" />
-				<?php esc_attr_e( 'Set as Primary', 'woocommerce-customer-profile-pictures' ); ?>
-			</label>
-
 			<button type="button" class="button wc-customer-profile-pictures-remove"><?php esc_attr_e( 'Remove', 'woocommerce-customer-profile-pictures' ); ?></button>
 		</p>
 

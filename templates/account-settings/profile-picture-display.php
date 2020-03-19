@@ -19,6 +19,7 @@
 		</label>
 		<img src="<?php echo esc_url( $profile_picture['url'] ); ?>" alt="<?php echo esc_attr( pathinfo( $profile_picture['url'], PATHINFO_FILENAME ) ); ?>"
 		     class="wc-customer-profile-picture-field-image" />
+		<input type="hidden" name="account_keep_profile_pictures[]" value="<?php echo esc_attr( $picture_index ); ?>" />
 	</p>
 
 	<p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last wc-customer-profile-picture-field-active">

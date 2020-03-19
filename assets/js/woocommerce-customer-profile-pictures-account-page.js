@@ -49,7 +49,9 @@
 
 			$profile_pictures_fieldset.attr( 'data-last', last_added_index );
 
-			if ( last_added_index >= $profile_pictures_fieldset.data( 'maximum' ) - 1 ) {
+			console.log( $profile_pictures_list.find( '.wc-customer-profile-picture-field' ).length );
+			
+			if ( $profile_pictures_list.find( '.wc-customer-profile-picture-field' ).length >= $profile_pictures_fieldset.data( 'maximum' ) ) {
 
 				$( this ).addClass( 'hidden' );
 
