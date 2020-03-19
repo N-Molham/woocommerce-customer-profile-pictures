@@ -1,0 +1,22 @@
+
+.wc-customer-profile-picture-list {
+	display: block;
+}
+
+.wc-customer-profile-picture-item {
+	display: inline-block;
+	padding-top: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+.wc-customer-profile-picture-image {
+	display: block;
+}
+
+.wc-customer-profile-pictures-image-model {
+	text-align: center;
+}
+
+.wc-customer-profile-pictures-image-model img {
+	width: 99%;
+}

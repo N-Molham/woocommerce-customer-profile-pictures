@@ -50,6 +50,11 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	protected $_plugin_settings;
 
 	/**
+	 * @var WC_Customer_Profile_Pictures_User_Edit
+	 */
+	protected $_edit_user;
+
+	/**
 	 * Gets the main instance of Framework Plugin instance.
 	 *
 	 * Ensures only one instance is/can be loaded.
@@ -96,6 +101,7 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 
 		$this->_plugin_settings  = new WC_Customer_Profile_Pictures_Settings();
 		$this->_account_settings = new WC_Customer_Profile_Pictures_Account_Settings();
+		$this->_edit_user        = new WC_Customer_Profile_Pictures_User_Edit();
 
 		add_filter( 'pre_get_avatar_data', [ $this, 'override_avatar_with_active_profile_picture' ], 10, 2 );
 
@@ -141,7 +147,7 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		$wanted_size_path = $this->generate_size_file_path( $args['size'], $active_profile_picture['file'] );
 
 		if ( file_exists( $wanted_size_path ) ) {
-			
+
 			return $this->return_avatar_args( $wanted_size_url, $args );
 
 		}
@@ -250,6 +256,15 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	public function get_account_settings_instance(): WC_Customer_Profile_Pictures_Account_Settings {
 
 		return $this->_account_settings;
+
+	}
+
+	/**
+	 * @return WC_Customer_Profile_Pictures_User_Edit
+	 */
+	public function get_user_edit_instance(): WC_Customer_Profile_Pictures_User_Edit {
+
+		return $this->_edit_user;
 
 	}
 
