@@ -33,9 +33,7 @@ class WC_Customer_Profile_Pictures_User_Edit {
 	 */
 	public function load_assets(): void {
 
-		$current_screen_id = get_current_screen()->id;
-
-		if ( 'profile' === $current_screen_id || 'user-edit' === $current_screen_id ) {
+		if ( in_array( get_current_screen()->id, [ 'profile', 'user-edit', 'shop_order' ], true ) ) {
 
 			add_thickbox();
 

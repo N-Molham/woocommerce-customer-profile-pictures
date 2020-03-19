@@ -20,6 +20,8 @@ namespace Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures;
 defined( 'ABSPATH' ) or exit;
 
 use SkyVerge\WooCommerce\PluginFramework\v5_5_1\SV_WC_Plugin;
+use WP_Comment;
+use WP_User;
 
 /**
  * @since 1.0.0
@@ -53,6 +55,11 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	 * @var WC_Customer_Profile_Pictures_User_Edit
 	 */
 	protected $_edit_user;
+
+	/**
+	 * @var WC_Customer_Profile_Pictures_Orders
+	 */
+	protected $_orders;
 
 	/**
 	 * Gets the main instance of Framework Plugin instance.
@@ -102,6 +109,7 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		$this->_plugin_settings  = new WC_Customer_Profile_Pictures_Settings();
 		$this->_account_settings = new WC_Customer_Profile_Pictures_Account_Settings();
 		$this->_edit_user        = new WC_Customer_Profile_Pictures_User_Edit();
+		$this->_orders           = new WC_Customer_Profile_Pictures_Orders();
 
 		add_filter( 'pre_get_avatar_data', [ $this, 'override_avatar_with_active_profile_picture' ], 10, 2 );
 
@@ -122,6 +130,14 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		if ( is_numeric( $id_or_email ) ) {
 
 			$user = get_user_by( 'ID', $id_or_email );
+
+		} elseif ( $id_or_email instanceof WP_Comment ) {
+
+			$user = get_user_by( 'email', $id_or_email->user_id );
+
+		} elseif ( $id_or_email instanceof WP_User ) {
+
+			$user = $id_or_email;
 
 		} else {
 
@@ -182,6 +198,36 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 	}
 
 	/**
+	 * Get customer's profile picture URL based on given size, and fallback to full size if not found
+	 *
+	 * @param array  $profile_picture
+	 * @param string $image_size
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
+	public function get_profile_picture_size_url( $profile_picture, $image_size = '' ): string {
+
+		if ( '' === $image_size || empty( $image_size ) ) {
+
+			return $profile_picture['url'];
+
+		}
+
+		$profile_picture_url = $profile_picture['url'];
+
+		if ( file_exists( $this->generate_size_file_path( $image_size, $profile_picture['file'] ) ) ) {
+
+			$profile_picture_url = $this->generate_size_file_path( $image_size, $profile_picture['url'] );
+
+		}
+
+		return $profile_picture_url;
+
+	}
+
+	/**
 	 * Builds an output URL or Path based on given URl or Path, and adding proper suffix
 	 *
 	 * @param string $suffix
@@ -212,6 +258,17 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		$args['url'] = $url;
 
 		return $args;
+
+	}
+
+	/**
+	 * @since 1.0.0
+	 *
+	 * @return WC_Customer_Profile_Pictures_Orders
+	 */
+	public function get_orders_instance(): WC_Customer_Profile_Pictures_Orders {
+
+		return $this->_orders;
 
 	}
 
