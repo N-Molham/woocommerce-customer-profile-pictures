@@ -72,16 +72,13 @@ class WC_Customer_Profile_Pictures_Orders {
 	 */
 	public function prepend_customer_profile_picture_to_order_number_column( $column, $order_id ): void {
 
-		/* @var $the_order WC_Order */
-		global $the_order;
-
 		if ( 'order_number' !== $column ) {
 
 			return;
 
 		}
 
-		$wc_order = $the_order ?? wc_get_order( $order_id );
+		$wc_order = wc_get_order( $order_id );
 
 		$profile_picture = $wc_order->get_meta( '_wc_customer_profile_picture' );
 
