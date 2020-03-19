@@ -97,6 +97,116 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		$this->_plugin_settings  = new WC_Customer_Profile_Pictures_Settings();
 		$this->_account_settings = new WC_Customer_Profile_Pictures_Account_Settings();
 
+		add_filter( 'pre_get_avatar_data', [ $this, 'override_avatar_with_active_profile_picture' ], 10, 2 );
+
+	}
+
+	/**
+	 * Overriding User's Avatar URL with the current active profile picture for him/her
+	 *
+	 * @param array      $args
+	 * @param int|string $id_or_email
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function override_avatar_with_active_profile_picture( $args, $id_or_email ): array {
+
+		if ( is_numeric( $id_or_email ) ) {
+
+			$user = get_user_by( 'ID', $id_or_email );
+
+		} else {
+
+			$user = get_user_by( 'email', $id_or_email );
+
+		}
+
+		if ( false === $user ) {
+
+			return $args;
+
+		}
+
+		$active_profile_picture = $this->_account_settings->get_customer_active_profile_picture( 'all', $user->ID );
+
+		if ( empty( $active_profile_picture ) ) {
+
+			return $args;
+
+		}
+
+		$wanted_size_url  = $this->generate_size_file_path( $args['size'], $active_profile_picture['url'] );
+		$wanted_size_path = $this->generate_size_file_path( $args['size'], $active_profile_picture['file'] );
+
+		if ( file_exists( $wanted_size_path ) ) {
+			
+			return $this->return_avatar_args( $wanted_size_url, $args );
+
+		}
+
+		$image_editor = wp_get_image_editor( $active_profile_picture['file'] );
+
+		// error getting the editor to serve the wanted size, fallback to full size
+		if ( is_wp_error( $image_editor ) ) {
+
+			return $this->return_avatar_args( $active_profile_picture['ur'], $args );
+
+		}
+
+		$resize = $image_editor->resize( $args['width'], $args['height'] );
+
+		if ( is_wp_error( $resize ) ) {
+
+			return $this->return_avatar_args( $active_profile_picture['ur'], $args );
+
+		}
+
+		$save_new_size = $image_editor->save( $wanted_size_path );
+
+		if ( is_wp_error( $save_new_size ) ) {
+
+			return $this->return_avatar_args( $active_profile_picture['ur'], $args );
+
+		}
+
+		return $this->return_avatar_args( $wanted_size_url, $args );
+
+	}
+
+	/**
+	 * Builds an output URL or Path based on given URl or Path, and adding proper suffix
+	 *
+	 * @param string $suffix
+	 * @param string $url
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
+	protected function generate_size_file_path( $suffix, $url ): string {
+
+		$url_dir = pathinfo( $url, PATHINFO_DIRNAME );
+		$url_ext = pathinfo( $url, PATHINFO_EXTENSION );
+		$name    = wp_basename( $url, ".$url_ext" );
+
+		return trailingslashit( $url_dir ) . "{$name}-{$suffix}.{$url_ext}";
+
+	}
+
+	/**
+	 * @param string $url
+	 * @param array  $args
+	 *
+	 * @return array
+	 */
+	protected function return_avatar_args( $url, $args ): array {
+
+		$args['url'] = $url;
+
+		return $args;
+
 	}
 
 	/**

@@ -3,7 +3,6 @@
 namespace Nabeel_Molham\WooCommerce\WC_Customer_Profile_Pictures;
 
 use WP_Error;
-use WP_User;
 
 /**
  * Customer's account settings integration class
@@ -260,6 +259,7 @@ class WC_Customer_Profile_Pictures_Account_Settings {
 
 		}
 
+		// if index doesn't exists or not longer available, fallback to the first picture
 		$active_profile_picture = $profile_pictures[ $active_profile_picture_index ] ?? array_shift( $profile_pictures );
 
 		/**
