@@ -78,14 +78,15 @@ class WC_Customer_Profile_Pictures_User_Edit {
 
 		foreach ( $user_profile_pictures as $index => $picture ) {
 
-			$model_id = 'wc-customer-profile-pictures-image-model-' . $index;
+			$picture_full_size_model_id = 'wc-customer-profile-pictures-image-model-' . $index;
+			$picture_small_size_url     = wc_customer_profile_pictures()->get_profile_picture_size_url( $picture, '96' );
 
 			$description .= '<span class="wc-customer-profile-picture-item">' .
-			                '<a href="#TB_inline?height=600&width=600&inlineId=' . esc_attr( $model_id ) . '" class="thickbox"' .
+			                '<a href="#TB_inline?height=600&width=600&inlineId=' . esc_attr( $picture_full_size_model_id ) . '" class="thickbox"' .
 			                ' title="' . esc_attr__( 'Profile #', 'woocommerce-customer-profile-pictures' ) . ( $index + 1 ) . '">' .
-			                '<img alt="" src="' . esc_url( $picture['url'] ) . '" class="wc-customer-profile-picture-image" width="96"></a></span>';
+			                '<img alt="" src="' . esc_url( $picture_small_size_url ) . '" class="wc-customer-profile-picture-image" width="96"></a></span>';
 
-			$description .= '<div id="' . esc_attr( $model_id ) . '" class="hidden">' .
+			$description .= '<div id="' . esc_attr( $picture_full_size_model_id ) . '" class="hidden">' .
 			                '<div class="wc-customer-profile-pictures-image-model"><img src="' . esc_url( $picture['url'] ) . '" alt=""/></div></div>';
 
 		}
