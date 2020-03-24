@@ -32,14 +32,12 @@ class WC_Customer_Profile_Pictures_User_Edit {
 	 * @return void
 	 */
 	public function load_assets(): void {
-		
-		if ( in_array( get_current_screen()->id, [ 'profile', 'user-edit', 'shop_order', 'edit-shop_order' ], true ) ) {
+
+		if ( in_array( get_current_screen()->id, [ 'profile', 'user-edit' ], true ) ) {
 
 			add_thickbox();
 
-			wp_enqueue_style( 'woocommerce-customer-profile-pictures-user-edit',
-				wc_customer_profile_pictures()->get_plugin_url() . '/assets/css/woocommerce-customer-profile-pictures-user-edit.css',
-				null, wc_customer_profile_pictures()->get_version() );
+			wp_enqueue_style( 'woocommerce-customer-profile-pictures-admin' );
 
 		}
 

@@ -24,7 +24,26 @@ class WC_Customer_Profile_Pictures_Orders {
 
 		add_action( 'woocommerce_admin_order_data_after_order_details', [ $this, 'prepend_customer_profile_picture_after_order_details' ] );
 
-		add_action( 'admin_enqueue_scripts', [ wc_customer_profile_pictures()->get_user_edit_instance(), 'load_assets' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'load_assets' ] );
+
+	}
+
+	/**
+	 * Load CSS & JS asset files
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function load_assets(): void {
+
+		if ( in_array( get_current_screen()->id, [ 'shop_order', 'edit-shop_order' ], true ) ) {
+
+			add_thickbox();
+
+			wp_enqueue_style( 'woocommerce-customer-profile-pictures-admin' );
+
+		}
 
 	}
 

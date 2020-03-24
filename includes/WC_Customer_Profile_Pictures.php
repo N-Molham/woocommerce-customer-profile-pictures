@@ -121,6 +121,10 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 
 		add_action( 'rest_api_init', [ $this, 'register_rest_api_endpoint' ], 20 );
 
+		wp_register_style( 'woocommerce-customer-profile-pictures-admin',
+			wc_customer_profile_pictures()->get_plugin_url() . '/assets/css/woocommerce-customer-profile-pictures-admin.css',
+			null, wc_customer_profile_pictures()->get_version() );
+
 	}
 
 	/**
