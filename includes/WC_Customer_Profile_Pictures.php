@@ -99,6 +99,7 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 			'text_domain' => 'woocommerce-customer-profile-pictures',
 		] );
 
+		add_action( 'woocommerce_init', [ $this, 'register_common_assets' ] );
 		add_action( 'woocommerce_init', [ $this, 'woocommerce_init' ] );
 
 	}
@@ -120,6 +121,17 @@ class WC_Customer_Profile_Pictures extends SV_WC_Plugin {
 		add_filter( 'pre_get_avatar_data', [ $this, 'override_avatar_with_active_profile_picture' ], 10, 2 );
 
 		add_action( 'rest_api_init', [ $this, 'register_rest_api_endpoint' ], 20 );
+
+	}
+
+	/**
+	 * Register common CSS & JS asset files
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_common_assets(): void {
 
 		wp_register_style( 'woocommerce-customer-profile-pictures-admin',
 			wc_customer_profile_pictures()->get_plugin_url() . '/assets/css/woocommerce-customer-profile-pictures-admin.css',
